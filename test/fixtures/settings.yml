@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  hour: 
+  increase_percent: 1.5
+  reduction_percent: 1.5
+  increase_conditions: 1
+  reduction_conditions: 1
+  buy_count: 9.99
+  shell_count: 9.99
+
+two:
+  id: 1
+  hour: 
+  increase_percent: 1.5
+  reduction_percent: 1.5
+  increase_conditions: 1
+  reduction_conditions: 1
+  buy_count: 9.99
+  shell_count: 9.99

@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_30_032732) do
+ActiveRecord::Schema.define(version: 2018_07_30_053409) do
+
+  create_table "settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "hour"
+    t.float "increase_percent"
+    t.float "reduction_percent"
+    t.integer "increase_conditions"
+    t.integer "reduction_conditions"
+    t.decimal "buy_count", precision: 10
+    t.decimal "shell_count", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tickers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "product_code"
+    t.datetime "timestamp"
+    t.integer "tick_id"
+    t.decimal "best_bid", precision: 10
+    t.decimal "best_ask", precision: 10
+    t.decimal "best_bid_size", precision: 10
+    t.decimal "best_ask_size", precision: 10
+    t.decimal "total_bid_depth", precision: 10
+    t.decimal "total_ask_depth", precision: 10
+    t.decimal "ltp", precision: 10
+    t.decimal "volume", precision: 10
+    t.decimal "volume_by_product", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
