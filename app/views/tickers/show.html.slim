@@ -1,24 +1,23 @@
-.container
-  h1 Tickers
-  table.table
-    thead.thead-dark
+h1 Tickers
+table.table
+  thead.thead-dark
+    tr
+      th ID
+      th 銘柄
+      th 最終取引価格
+      th 確認日時
+      th 最高買い価格
+      th 最低売り価格
+      th 買い注文総数
+      th 売り注文総数
+  tbody
+    - @tickers.each do |ticker|
       tr
-        th ID
-        th 銘柄
-        th 最終取引価格
-        th 確認日時
-        th 最高買い価格
-        th 最低売り価格
-        th 買い注文総数
-        th 売り注文総数
-    tbody
-      - @tickers.each do |ticker|
-        tr
-          td = ticker.id
-          td = ticker.product_code
-          td = ticker.ltp
-          td = ticker.timestamp
-          td = ticker.best_ask
-          td = ticker.best_bid
-          td = ticker.total_ask_depth
-          td = ticker.total_bid_depth
+        td = ticker.id
+        td = ticker.product_code
+        td = ticker.ltp
+        td = ticker.timestamp
+        td = ticker.best_ask
+        td = ticker.best_bid
+        td = ticker.total_ask_depth
+        td = ticker.total_bid_depth
