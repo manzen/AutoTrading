@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'top#index'
   resources :settings
   get 'tickers/show'
   devise_for :users

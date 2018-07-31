@@ -1,4 +1,5 @@
                    Prefix Verb   URI Pattern                                                                              Controller#Action
+                     root GET    /                                                                                        top#index
                  settings GET    /settings(.:format)                                                                      settings#index
                           POST   /settings(.:format)                                                                      settings#create
               new_setting GET    /settings/new(.:format)                                                                  settings#new
