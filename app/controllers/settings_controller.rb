@@ -1,15 +1,10 @@
 class SettingsController < ApplicationController
-  before_action :set_setting, only: [:show, :edit, :update, :destroy]
+  before_action :set_setting, only: [:edit, :update]
 
   # GET /settings
   # GET /settings.json
   def index
-    @settings = Setting.all
-  end
-
-  # GET /settings/1
-  # GET /settings/1.json
-  def show
+    @setting = Setting.first
   end
 
   # GET /settings/new
@@ -28,7 +23,7 @@ class SettingsController < ApplicationController
 
     respond_to do |format|
       if @setting.save
-        format.html { redirect_to @setting, notice: 'Setting was successfully created.' }
+        format.html { redirect_to settings_url, notice: 'Setting was successfully created.' }
         format.json { render :show, status: :created, location: @setting }
       else
         format.html { render :new }
@@ -51,16 +46,6 @@ class SettingsController < ApplicationController
     end
   end
 
-  # DELETE /settings/1
-  # DELETE /settings/1.json
-  def destroy
-    @setting.destroy
-    respond_to do |format|
-      format.html { redirect_to settings_url, notice: 'Setting was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_setting
@@ -69,6 +54,6 @@ class SettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def setting_params
-      params.require(:setting).permit(:hour, :increase_percent, :reduction_percent, :increase_conditions, :reduction_conditions, :buy_count, :shell_count)
+      params.require(:setting).permit(:minutes, :increase_percent, :reduction_percent, :increase_conditions, :reduction_conditions, :buy_count, :shell_count)
     end
 end

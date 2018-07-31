@@ -1,7 +1,7 @@
 class CreateSettings < ActiveRecord::Migration[5.2]
   def change
     create_table :settings do |t|
-      t.integer :hour
+      t.integer :minutes
       t.float :increase_percent
       t.float :reduction_percent
       t.integer :increase_conditions
