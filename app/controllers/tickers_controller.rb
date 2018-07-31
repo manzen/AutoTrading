@@ -1,5 +1,5 @@
 class TickersController < ApplicationController
   def show
-    @tickers = Ticker.all
+    @tickers = Ticker.latest
   end
 end

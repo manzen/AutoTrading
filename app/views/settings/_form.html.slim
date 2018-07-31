@@ -1,0 +1,41 @@
+= form_for @setting do |f|
+  - if @setting.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@setting.errors.count, "error")} prohibited this setting from being saved:"
+      ul
+        - @setting.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    .field
+      = f.label :hour, '取引頻度（分）'
+      = f.number_field :hour, class: 'form-control'
+  .form-group
+    .field
+      = f.label :buy_count, '数量（買）'
+      = f.text_field :buy_count, class: 'form-control'
+  .form-group
+    .field
+      = f.label :shell_count, '数量（売）'
+      = f.text_field :shell_count, class: 'form-control'
+  .form-group
+    .field
+      = f.label :increase_percent, '増加率'
+      = f.text_field :increase_percent, class: 'form-control'
+  .form-group
+    .field
+      = f.label :reduction_percent, '減少率'
+      = f.text_field :reduction_percent, class: 'form-control'
+  .form-group
+    .field
+      = f.label :increase_conditions, '買い条件'
+      = f.number_field :increase_conditions, class: 'form-control'
+  .form-group
+    .field
+      = f.label :reduction_conditions, '売り条件'
+      = f.number_field :reduction_conditions, class: 'form-control'
+  .row
+    .col-md-1
+      .actions = f.submit '更新', class: 'btn btn-primary'
+    .col-md-1
+      = link_to '前のページ', settings_path, class: 'btn btn-secondary'

@@ -1,0 +1,35 @@
+.container
+  h1 Setting
+
+  h4 現在の買い条件
+  p 前回の確認時点より、"#{@settings.first.hour}" 分以上経過時点（取引頻度）で前回の最終取引価格より,"#{@settings.first.reduction_percent}"%減少（減少率）しているかつ
+    総資産の保有数が"#{@settings.first.reduction_conditions}" 万円（売り条件）の場合、"#{@settings.first.buy_count}" bit coin(数量（買）)を売ります
+
+  h4 現在の売り条件
+  p 前回の確認時点より、"#{@settings.first.hour}" 分以上経過時点（取引頻度）で前回の最終取引価格より,"#{@settings.first.increase_percent}"%上昇（増加率）しているかつ
+    ビットコインの保有数が"#{@settings.first.increase_conditions}" bit coin（売り条件）の場合、"#{@settings.first.shell_count}" bit coin(数量（売）)を売ります
+
+  table.table
+    thead.thead-dark
+      tr
+        th 取引頻度（分）
+        th 数量（買）
+        th 数量（売）
+        th 増加率
+        th 減少率
+        th 買い条件
+        th 売り条件
+
+        th
+
+    tbody
+      - @settings.each do |setting|
+        tr
+          td = setting.hour
+          td = setting.buy_count
+          td = setting.shell_count
+          td = setting.increase_percent
+          td = setting.reduction_percent
+          td = setting.increase_conditions
+          td = setting.reduction_conditions
+          td = link_to '編集', edit_setting_path(setting)
