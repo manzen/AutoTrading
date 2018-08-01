@@ -8,7 +8,7 @@
 
   .form-group
     .field
-      = f.label :minutes, '取引頻度（分）'
+      = f.label :minutes, '取引間隔（分）'
       = f.number_field :minutes, class: 'form-control'
   .form-group
     .field
@@ -28,12 +28,12 @@
       = f.text_field :reduction_percent, class: 'form-control'
   .form-group
     .field
-      = f.label :increase_conditions, '買い条件'
-      = f.number_field :increase_conditions, class: 'form-control'
+      = f.label :jpy, '現金保有数（万円）'
+      = f.number_field :jpy, class: 'form-control'
   .form-group
     .field
-      = f.label :reduction_conditions, '売り条件'
-      = f.number_field :reduction_conditions, class: 'form-control'
+      = f.label :bitcoin, 'Bitcoin保有数'
+      = f.text_field :bitcoin, class: 'form-control'
   .row
     .col-md-2
       .actions = f.submit class: 'btn btn-primary'

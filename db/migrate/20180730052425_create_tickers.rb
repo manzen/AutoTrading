@@ -4,15 +4,15 @@ class CreateTickers < ActiveRecord::Migration[5.2]
       t.string :product_code
       t.datetime :timestamp
       t.integer :tick_id
-      t.decimal :best_bid
-      t.decimal :best_ask
-      t.decimal :best_bid_size
-      t.decimal :best_ask_size
-      t.decimal :total_bid_depth
-      t.decimal :total_ask_depth
-      t.decimal :ltp
-      t.decimal :volume
-      t.decimal :volume_by_product
+      t.decimal :best_bid, precision: 20, scale: 8
+      t.decimal :best_ask, precision: 20, scale: 8
+      t.decimal :best_bid_size, precision: 20, scale: 8
+      t.decimal :best_ask_size, precision: 20, scale: 8
+      t.decimal :total_bid_depth, precision: 20, scale: 8
+      t.decimal :total_ask_depth, precision: 20, scale: 8
+      t.decimal :ltp, precision: 20, scale: 8
+      t.decimal :volume, precision: 20, scale: 8
+      t.decimal :volume_by_product, precision: 20, scale: 8
 
       t.timestamps
     end

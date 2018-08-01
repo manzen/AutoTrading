@@ -4,10 +4,10 @@ class CreateSettings < ActiveRecord::Migration[5.2]
       t.integer :minutes
       t.float :increase_percent
       t.float :reduction_percent
-      t.integer :increase_conditions
-      t.integer :reduction_conditions
-      t.decimal :buy_count
-      t.decimal :shell_count
+      t.integer :jpy
+      t.decimal :bitcoin, precision: 20, scale: 8
+      t.decimal :buy_count, precision: 20, scale: 8
+      t.decimal :shell_count, precision: 20, scale: 8
 
       t.timestamps
     end

@@ -1,29 +1,30 @@
 h1 Setting
 
-p ※画面下部の表と以下の説明は連動しています。条件に不備がないかご確認ください。
+p ※1 画面下部の表と以下の説明は連動しています。条件をよく確認して不備がないかご確認ください。
+p ※2 取引間隔は分計算しておりますので、お間違いのないようご注意ください。例 720/12時間 1440分/1日 43200/30日
 
 h4 現在の買い条件
 .jumbotron
-  p 前回の確認時点より、”#{@setting ? @setting.minutes : ''}” 分以上経過時点（取引頻度）で前回の最終取引価格より,”#{@setting ? @setting.reduction_percent : ''}”%減少（減少率）しているかつ
-    総資産の保有数が”#{@setting ? @setting.reduction_conditions : ''}” 万円（売り条件）の場合、”#{@setting ? @setting.buy_count : ''}” bit coin(数量（買）)を売ります
+  p 確認時間より ”#{@setting ? @setting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@setting ? @setting.reduction_percent : ''}”%減少（減少率）しているかつ
+    総資産の保有数が”#{@setting ? @setting.jpy : ''}” 万円（売り条件）以上の場合、”#{@setting ? @setting.buy_count : ''}” bit coin(数量（買）)を売ります
 
 h4 現在の売り条件
 .jumbotron
-  p 前回の確認時点より、”#{@setting ? @setting.minutes : ''}” 分以上経過時点（取引頻度）で前回の最終取引価格より,”#{@setting ? @setting.increase_percent : ''}”%上昇（増加率）しているかつ
-    ビットコインの保有数が”#{@setting ? @setting.increase_conditions : ''}” bit coin（売り条件）の場合、”#{@setting ? @setting.shell_count : ''}” bit coin(数量（売）)を売ります
+  p 確認時間より ”#{@setting ? @setting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@setting ? @setting.increase_percent : ''}”%上昇（増加率）しているかつ
+    ビットコインの保有数が”#{@setting ? @setting.bitcoin : ''}” bit coin（売り条件）以上の場合、”#{@setting ? @setting.shell_count : ''}” bit coin(数量（売）)を売ります
 - unless @setting
   p = link_to '新規作成', new_setting_path , class: 'btn btn-primary'
 
 table.table
   thead.thead-dark
     tr
-      th 取引頻度（分）
+      th 取引間隔（分）
       th 数量（買）
       th 数量（売）
       th 増加率
       th 減少率
-      th 買い条件
-      th 売り条件
+      th 現金保有数（万円）
+      th Bitcoin保有数
 
       th
 
@@ -35,6 +36,6 @@ table.table
         td = @setting.shell_count
         td = @setting.increase_percent
         td = @setting.reduction_percent
-        td = @setting.increase_conditions
-        td = @setting.reduction_conditions
+        td = @setting.jpy
+        td = @setting.bitcoin
         td = link_to '編集', edit_setting_path(@setting)

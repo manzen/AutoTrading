@@ -54,6 +54,6 @@ class SettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def setting_params
-      params.require(:setting).permit(:minutes, :increase_percent, :reduction_percent, :increase_conditions, :reduction_conditions, :buy_count, :shell_count)
+      params.require(:setting).permit(:minutes, :increase_percent, :reduction_percent, :jpy, :bitcoin, :buy_count, :shell_count)
     end
 end
