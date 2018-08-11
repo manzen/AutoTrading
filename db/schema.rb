@@ -10,16 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_31_011020) do
+ActiveRecord::Schema.define(version: 2018_08_11_150718) do
 
-  create_table "settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "buy_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "minutes"
-    t.float "increase_percent"
     t.float "reduction_percent"
     t.integer "jpy"
-    t.decimal "bitcoin", precision: 20, scale: 8
     t.decimal "buy_count", precision: 20, scale: 8
-    t.decimal "shell_count", precision: 20, scale: 8
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sell_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "minutes"
+    t.float "increase_percent"
+    t.decimal "bitcoin", precision: 20, scale: 8
+    t.decimal "sell_count", precision: 20, scale: 8
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

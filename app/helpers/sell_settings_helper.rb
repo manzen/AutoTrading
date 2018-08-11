@@ -1,0 +1,2 @@
+module SellSettingsHelper
+end

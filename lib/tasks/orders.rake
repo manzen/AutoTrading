@@ -25,57 +25,67 @@ namespace :orders do
       # 最終取引確認時間 - 現在時刻 = 差分
       minutes_difference = now_time - last_trade_time
 
-      setting = Setting.first
+      # 現在の最終取引価格
+      latest_rate = result['ltp']
+      # 前回の最終取引価格
+      last_rate = ticker.ltp
+      # 前回の最終取引価格との増減率
+      rate = (latest_rate - last_rate) / last_rate * 100
 
-      # settingが存在しない場合は処理しない
-      if setting
+      # 資産情報を取得
+      key = Settings.bitFlyer.key
+      secret = Settings.bitFlyer.secret
+
+      timestamp = Time.now.to_i.to_s
+      method = 'GET'
+      uri = URI.parse('https://api.bitflyer.jp')
+      uri.path = '/v1/me/getbalance'
+
+
+      text = timestamp + method + uri.request_uri
+      sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, text)
+
+      options = Net::HTTP::Get.new(uri.request_uri, initheader = {
+          'ACCESS-KEY' => key,
+          'ACCESS-TIMESTAMP' => timestamp,
+          'ACCESS-SIGN' => sign,
+      })
+
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+      response = https.request(options)
+      balance = JSON.parse(response.body)
+
+      buy_setting = BuySetting.first
+
+      # 買う処理
+      if buy_setting
         # 最終確認時間との差分が設定した取引間隔より大きい場合
-        if minutes_difference > setting.minutes
-          # 現在の最終取引価格
-          latest_rate = result['ltp']
-          # 前回の最終取引価格
-          last_rate = ticker.ltp
-          # 前回の最終取引価格との増減率
-          rate = (latest_rate - last_rate) / last_rate * 100
+        if minutes_difference > buy_setting.minutes
+          # getbalanceがErrorの場合は処理しない
+          if balance.kind_of?(Array)
+            jpy = balance.select {|b| b['currency_code'] == 'JPY'}
+            jpy_amount = jpy.first['amount']
+            if rate < 0 && rate.abs > buy_setting.reduction_percent && jpy_amount > buy_setting.jpy
+              p '買う'
+            end
+          end
+        end
+    end
 
-          # 資産情報を取得
-          key = Settings.bitFlyer.key
-          secret = Settings.bitFlyer.secret
+    sell_setting = SellSetting.first
 
-          timestamp = Time.now.to_i.to_s
-          method = 'GET'
-          uri = URI.parse('https://api.bitflyer.jp')
-          uri.path = '/v1/me/getbalance'
-
-
-          text = timestamp + method + uri.request_uri
-          sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, text)
-
-          options = Net::HTTP::Get.new(uri.request_uri, initheader = {
-              'ACCESS-KEY' => key,
-              'ACCESS-TIMESTAMP' => timestamp,
-              'ACCESS-SIGN' => sign,
-          })
-
-          https = Net::HTTP.new(uri.host, uri.port)
-          https.use_ssl = true
-          response = https.request(options)
-          balance = JSON.parse(response.body)
-
+      # 売る処理
+      if sell_setting
+        # 最終確認時間との差分が設定した取引間隔より大きい場合
+        if minutes_difference > sell_setting.minutes
           # getbalanceがErrorの場合は処理しない
           if balance.kind_of?(Array)
             bitcoin = balance.select {|b| b['currency_code'] == 'BTC'}
-            jpy = balance.select {|b| b['currency_code'] == 'JPY'}
-
             bitcoin_amount = bitcoin.first['amount']
-            jpy_amount = jpy.first['amount']
-
             # 前回の最終取引価格より増加かつ、ユーザーが設定した増加率以上に増加したかつ、総保有場合Bitcoinがユーザー設定値以上の場合
-            if rate > 0 && rate > setting.increase_percent && bitcoin_amount > setting.bitcoin
+            if rate > 0 && rate > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
               p '売る'
-              # 前回の最終取引価格より減少かつ、ユーザーが設定した減少率以上に減少したかつ、総保有場合日本円がユーザー設定値以上の場合
-            elsif rate < 0 && rate.abs > setting.reduction_percent && jpy_amount > setting.jpy
-              p '買う'
             end
           end
         end

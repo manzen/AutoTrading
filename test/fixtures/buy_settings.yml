@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  minutes: 1
+  reduction_percent: 1.5
+  jpy: 1
+  buy_count: 9.99
+
+two:
+  minutes: 1
+  reduction_percent: 1.5
+  jpy: 1
+  buy_count: 9.99
