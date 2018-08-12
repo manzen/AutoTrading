@@ -5,7 +5,7 @@ require 'openssl'
 namespace :orders do
   desc '現在のレートを取得して,条件に一致した場合、ビットコインの売買を行う'
   task :sendchildorder => :environment do
-    uri = URI.parse("https://api.bitflyer.jp")
+    uri = URI.parse('https://api.bitflyer.jp')
     uri.path = '/v1/ticker'
     uri.query = 'product_code=BTC_JPY'
     https = Net::HTTP.new(uri.host, uri.port)
@@ -15,6 +15,10 @@ namespace :orders do
     result = JSON.parse(response.body)
 
     ticker = Ticker.last
+
+    # 認証情報
+    key = Settings.bitFlyer.key
+    secret = Settings.bitFlyer.secret
 
     # tickerが存在しない場合は処理しない
     if ticker
@@ -33,12 +37,8 @@ namespace :orders do
       rate = (latest_rate - last_rate) / last_rate * 100
 
       # 資産情報を取得
-      key = Settings.bitFlyer.key
-      secret = Settings.bitFlyer.secret
-
       timestamp = Time.now.to_i.to_s
       method = 'GET'
-      uri = URI.parse('https://api.bitflyer.jp')
       uri.path = '/v1/me/getbalance'
 
 
@@ -48,7 +48,7 @@ namespace :orders do
       options = Net::HTTP::Get.new(uri.request_uri, initheader = {
           'ACCESS-KEY' => key,
           'ACCESS-TIMESTAMP' => timestamp,
-          'ACCESS-SIGN' => sign,
+          'ACCESS-SIGN' => sign
       })
 
       https = Net::HTTP.new(uri.host, uri.port)
@@ -100,6 +100,39 @@ namespace :orders do
     else
       p 'Ticker update faild'
       p 'response: ', result
+    end
+
+    #  bitFlyer Lightning getchildorders API Call
+    timestamp = Time.now.to_i.to_s
+    method = 'GET'
+    uri.path = '/v1/me/getchildorders'
+
+
+    text = timestamp + method + uri.request_uri
+    sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, text)
+
+    options = Net::HTTP::Get.new(uri.request_uri, initheader = {
+        'ACCESS-KEY' => key,
+        'ACCESS-TIMESTAMP' => timestamp,
+        'ACCESS-SIGN' => sign
+    })
+
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    response = https.request(options)
+    childorders = JSON.parse(response.body)
+
+    # Order更新
+    Order.delete_all
+    childorders.each do |order|
+      order['id'] = nil
+      order = Order.new(order)
+      if order.save
+        p 'Order update success'
+      else
+        p 'Order update faild'
+        p 'response: ', childorders
+      end
     end
   end
 end
