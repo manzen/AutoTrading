@@ -7,7 +7,7 @@ h4 現在の買い条件
 .jumbotron
   p 確認時間より ”#{@buySetting ? @buySetting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@buySetting ? @buySetting.reduction_percent : ''}”%減少（減少率）しているかつ
     総資産の保有数が”#{@buySetting ? @buySetting.jpy : ''}” 万円（売り条件）以上の場合、”#{@buySetting ? @buySetting.buy_count : ''}” bit coin(数量（買）)を売ります
-- unless @setting
+- unless @buySetting
   p = link_to '新規作成', new_buy_setting_path , class: 'btn btn-primary'
 
 table.table
