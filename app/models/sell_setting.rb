@@ -1,0 +1,2 @@
+class SellSetting < ApplicationRecord
+end

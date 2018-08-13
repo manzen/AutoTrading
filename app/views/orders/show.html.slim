@@ -1,0 +1,23 @@
+h1 Orders
+table.table
+  thead.thead-dark
+    tr
+      th Child Order ID
+      th 銘柄
+      th 取引内容
+      th 注文タイプ
+      th 価格
+      th 価格平均
+      th SIZE
+      th オーダ状況
+  tbody
+    - @orders.each do |order|
+      tr
+        td = order.child_order_id
+        td = order.product_code
+        td = order.side
+        td = order.child_order_type
+        td = order.price
+        td = order.average_price
+        td = order.size
+        td = order.child_order_state

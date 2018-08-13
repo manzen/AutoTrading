@@ -33,3 +33,4 @@ auto-trading.iml
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+railways.cache

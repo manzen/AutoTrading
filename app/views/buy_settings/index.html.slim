@@ -1,0 +1,30 @@
+h1 BuySetting
+
+p ※1 画面下部の表と以下の説明は連動しています。条件をよく確認して不備がないかご確認ください。
+p ※2 取引間隔は分計算しておりますので、お間違いのないようご注意ください。例 720/12時間 1440分/1日 43200/30日
+
+h4 現在の買い条件
+.jumbotron
+  p 確認時間より ”#{@buySetting ? @buySetting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@buySetting ? @buySetting.reduction_percent : ''}”%減少（減少率）しているかつ
+    総資産の保有数が”#{@buySetting ? @buySetting.jpy : ''}” 万円（売り条件）以上の場合、”#{@buySetting ? @buySetting.buy_count : ''}” bit coin(数量（買）)を売ります
+- unless @setting
+  p = link_to '新規作成', new_buy_setting_path , class: 'btn btn-primary'
+
+table.table
+  thead.thead-dark
+    tr
+      th 取引間隔（分）
+      th 数量（買）
+      th 減少率
+      th 現金保有数（万円）
+
+      th
+
+  tbody
+    - if @buySetting
+      tr
+        td = @buySetting.minutes
+        td = @buySetting.buy_count
+        td = @buySetting.reduction_percent
+        td = @buySetting.jpy
+        td = link_to '編集', edit_buy_setting_path(@buySetting)

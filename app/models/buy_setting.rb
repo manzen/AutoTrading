@@ -1,0 +1,2 @@
+class BuySetting < ApplicationRecord
+end
