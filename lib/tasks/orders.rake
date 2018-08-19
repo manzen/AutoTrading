@@ -4,6 +4,26 @@ require 'openssl'
 
 namespace :orders do
   desc '現在のレートを取得して,条件に一致した場合、ビットコインの売買を行う'
+  task :ticker => :environment do
+    uri = URI.parse('https://api.bitflyer.jp')
+    uri.path = '/v1/ticker'
+    uri.query = 'product_code=BTC_JPY'
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    # bitFlyer Lightning Ticker API Call
+    response = https.get uri.request_uri
+    result = JSON.parse(response.body)
+
+    # Ticker更新
+    ticker = Ticker.new(result)
+    if ticker.save
+      p 'Ticker update success'
+    else
+      p 'Ticker update faild'
+      p 'response: ', result
+    end
+  end
+
   task :sendchildorder => :environment do
     uri = URI.parse('https://api.bitflyer.jp')
     uri.path = '/v1/ticker'
@@ -41,7 +61,6 @@ namespace :orders do
       method = 'GET'
       uri.path = '/v1/me/getbalance'
 
-
       text = timestamp + method + uri.request_uri
       sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, text)
 
@@ -67,13 +86,38 @@ namespace :orders do
             jpy = balance.select {|b| b['currency_code'] == 'JPY'}
             jpy_amount = jpy.first['amount']
             if rate < 0 && rate.abs > buy_setting.reduction_percent && jpy_amount > buy_setting.jpy
-              p '買う'
+              timestamp = Time.now.to_i.to_s
+              method = "POST"
+              uri = URI.parse("https://api.bitflyer.jp")
+              uri.path = "/v1/me/sendchildorder"
+              body = {
+                  "product_code": "BTC_JPY",
+                  "child_order_type": "MARKET",
+                  "side": "BUY",
+                  "size": buy_setting.buy_count
+              }
+
+              text = timestamp + method + uri.request_uri + body
+              sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"), secret, text)
+
+              options = Net::HTTP::Post.new(uri.request_uri, initheader = {
+                  "ACCESS-KEY" => key,
+                  "ACCESS-TIMESTAMP" => timestamp,
+                  "ACCESS-SIGN" => sign,
+                  "Content-Type" => "application/json"
+              })
+              options.body = body
+
+              https = Net::HTTP.new(uri.host, uri.port)
+              https.use_ssl = true
+              response = https.request(options)
+              puts response.body
             end
           end
         end
-    end
+      end
 
-    sell_setting = SellSetting.first
+      sell_setting = SellSetting.first
 
       # 売る処理
       if sell_setting
@@ -85,28 +129,42 @@ namespace :orders do
             bitcoin_amount = bitcoin.first['amount']
             # 前回の最終取引価格より増加かつ、ユーザーが設定した増加率以上に増加したかつ、総保有場合Bitcoinがユーザー設定値以上の場合
             if rate > 0 && rate > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
-              p '売る'
+              timestamp = Time.now.to_i.to_s
+              method = "POST"
+              uri = URI.parse("https://api.bitflyer.jp")
+              uri.path = "/v1/me/sendchildorder"
+              body = {
+                  "product_code": "BTC_JPY",
+                  "child_order_type": "MARKET",
+                  "side": "SELL",
+                  "size": sell_setting.sell_count
+              }
+
+              text = timestamp + method + uri.request_uri + body
+              sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"), secret, text)
+
+              options = Net::HTTP::Post.new(uri.request_uri, initheader = {
+                  "ACCESS-KEY" => key,
+                  "ACCESS-TIMESTAMP" => timestamp,
+                  "ACCESS-SIGN" => sign,
+                  "Content-Type" => "application/json"
+              })
+              options.body = body
+
+              https = Net::HTTP.new(uri.host, uri.port)
+              https.use_ssl = true
+              response = https.request(options)
+              puts response.body
             end
           end
         end
       end
     end
 
-
-    # Ticker更新
-    ticker = Ticker.new(result)
-    if ticker.save
-      p 'Ticker update success'
-    else
-      p 'Ticker update faild'
-      p 'response: ', result
-    end
-
     #  bitFlyer Lightning getchildorders API Call
     timestamp = Time.now.to_i.to_s
     method = 'GET'
     uri.path = '/v1/me/getchildorders'
-
 
     text = timestamp + method + uri.request_uri
     sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, text)
