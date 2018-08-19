@@ -1,4 +1,15 @@
 h1 Orders
+= form_with url: order_start_path do |form|
+  .form-group
+    .field
+      = form.label '定期的に取引を開始したい場合、こちらのボタンを押してください。'
+      = form.submit '取引開始', class: 'btn btn-primary'
+
+= form_with url: order_stop_path do |form|
+  .form-group
+    .field
+      = form.label '定期的な取引を停止したい場合、こちらのボタンを押してください。'
+      = form.submit '取引停止', class: 'btn btn-danger'
 table.table
   thead.thead-dark
     tr

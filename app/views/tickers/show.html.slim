@@ -1,4 +1,10 @@
 h1 Tickers
+= form_with url: change_interval_path do |form|
+  .form-group
+    .field
+      = form.label 'bitFlyer ticker apiの実行間隔を分単位で変更します。※30と入力した場合は30分おきにticker apiを実行します。'
+      = form.text_field :time, class: 'form-control col-md-2'
+      = form.submit '更新', class: 'btn btn-primary'
 table.table
   thead.thead-dark
     tr
