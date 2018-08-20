@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2018_08_12_054200) do
     t.float "reduction_percent"
     t.integer "jpy"
     t.decimal "buy_count", precision: 20, scale: 8
+    t.boolean "is_execution", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 2018_08_12_054200) do
     t.float "increase_percent"
     t.decimal "bitcoin", precision: 20, scale: 8
     t.decimal "sell_count", precision: 20, scale: 8
+    t.boolean "is_execution", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

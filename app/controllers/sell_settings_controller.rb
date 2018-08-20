@@ -46,6 +46,34 @@ class SellSettingsController < ApplicationController
     end
   end
 
+  def start
+    sellSetting = SellSetting.first
+    sellSetting.is_execution = true
+    respond_to do |format|
+      if sellSetting.save
+        format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }
+        format.json { render :show, status: :ok, location: sellSetting }
+      else
+        format.html { render :show }
+        format.json { render json: sellSetting.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def stop
+    sellSetting = SellSetting.first
+    sellSetting.is_execution = false
+    respond_to do |format|
+      if sellSetting.save
+        format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }
+        format.json { render :show, status: :ok, location: sellSetting }
+      else
+        format.html { render :show }
+        format.json { render json: sellSetting.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_sell_setting

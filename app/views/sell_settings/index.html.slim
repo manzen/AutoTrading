@@ -1,14 +1,26 @@
 h1 SellSetting
 
 p ※1 画面下部の表と以下の説明は連動しています。条件をよく確認して不備がないかご確認ください。
-p ※2 取引間隔は分計算しておりますので、お間違いのないようご注意ください。例 720/12時間 1440分/1日 43200/30日
+p ※2 取引間隔は分計算しておりますので、お間違いのないようご注意ください。例 720分/12時間 1440分/1日 43200分/30日
 
 h4 現在の売り条件
 .jumbotron
-  p 確認時間より ”#{@sellSetting ? @sellSetting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@sellSetting ? @sellSetting.increase_percent : ''}”%上昇（増加率）しているかつ
-    ビットコインの保有数が”#{@sellSetting ? @sellSetting.bitcoin : ''}” bit coin（売り条件）以上の場合、”#{@sellSetting ? @sellSetting.sell_count : ''}” bit coin(数量（売）)を売ります
+  p 現在時間より ”#{@sellSetting ? @sellSetting.minutes : ''}” 分前の時点（取引頻度）の最終取引価格より,”#{@sellSetting ? @sellSetting.increase_percent : ''}”%上昇（増加率）しているかつ
+    ビットコインの保有数が”#{@sellSetting ? @sellSetting.bitcoin : ''}” bit coin（売り条件）以上の場合、”#{@sellSetting ? @sellSetting.sell_count : ''}” bit coin(数量（売）)を売ります。
 - unless @sellSetting
   p = link_to '新規作成', new_sell_setting_path, class: 'btn btn-primary'
+
+= form_with url: sell_start_path do |form|
+  .form-group
+    .field
+      = form.label '定期的に売り取引を開始したい場合、こちらのボタンを押してください。'
+      = form.submit '取引開始', class: 'btn btn-primary'
+
+= form_with url: sell_stop_path do |form|
+  .form-group
+    .field
+      = form.label '定期的な売り取引を停止したい場合、こちらのボタンを押してください。'
+      = form.submit '取引停止', class: 'btn btn-danger'
 
 table.table
   thead.thead-dark
@@ -17,7 +29,7 @@ table.table
       th 数量（売）
       th 増加率
       th Bitcoin保有数
-
+      th 取引状態
       th
 
   tbody
@@ -27,4 +39,5 @@ table.table
         td = @sellSetting.sell_count
         td = @sellSetting.increase_percent
         td = @sellSetting.bitcoin
+        td = @sellSetting.is_execution == true ? '開始' : '停止'
         td = link_to '編集', edit_sell_setting_path(@sellSetting)

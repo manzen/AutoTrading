@@ -46,6 +46,34 @@ class BuySettingsController < ApplicationController
     end
   end
 
+  def start
+    buySetting = BuySetting.first
+    buySetting.is_execution = true
+    respond_to do |format|
+      if buySetting.save
+        format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
+        format.json { render :show, status: :ok, location: buySetting }
+      else
+        format.html { render :show }
+        format.json { render json: buySetting.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def stop
+    buySetting = BuySetting.first
+    buySetting.is_execution = false
+    respond_to do |format|
+      if buySetting.save
+        format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
+        format.json { render :show, status: :ok, location: buySetting }
+      else
+        format.html { render :show }
+        format.json { render json: buySetting.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_buy_setting

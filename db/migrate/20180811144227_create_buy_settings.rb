@@ -5,6 +5,7 @@ class CreateBuySettings < ActiveRecord::Migration[5.2]
       t.float :reduction_percent
       t.integer :jpy
       t.decimal :buy_count, precision: 20, scale: 8
+      t.boolean :is_execution, default: false
 
       t.timestamps
     end

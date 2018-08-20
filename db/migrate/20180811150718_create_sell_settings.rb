@@ -5,6 +5,7 @@ class CreateSellSettings < ActiveRecord::Migration[5.2]
       t.float :increase_percent
       t.decimal :bitcoin, precision: 20, scale: 8
       t.decimal :sell_count, precision: 20, scale: 8
+      t.boolean :is_execution, default: false
 
       t.timestamps
     end

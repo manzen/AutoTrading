@@ -23,7 +23,7 @@
       = f.label :bitcoin, 'Bitcoin保有数'
       = f.number_field :bitcoin, class: 'form-control'
   .row
-    .col-md-2
-      .actions = f.submit class: 'btn btn-primary'
-    .col-md-2
-      = link_to 'Back', buy_settings_path, class: 'btn btn-secondary'
+    .col-md-1
+      .actions = f.submit '更新',class: 'btn btn-primary'
+    .col-md-1
+      = link_to '戻る', buy_settings_path, class: 'btn btn-secondary'
