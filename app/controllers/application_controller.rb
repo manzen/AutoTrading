@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
 
   private
   def basic
-    name = Settings.auth.name
-    passwd = Settings.auth.passwd
+    name = 'admin'
+    passwd = 'cdf547ed4c64e6994af35cfcd69c4204c9227a97'
     authenticate_or_request_with_http_basic('BA') do |n, p|
       n == name && Digest::SHA1.hexdigest(p) == passwd
     end
