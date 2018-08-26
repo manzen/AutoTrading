@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_12_054200) do
+ActiveRecord::Schema.define(version: 2018_08_26_065500) do
 
   create_table "buy_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "minutes"
@@ -18,6 +18,19 @@ ActiveRecord::Schema.define(version: 2018_08_12_054200) do
     t.integer "jpy"
     t.decimal "buy_count", precision: 20, scale: 8
     t.boolean "is_execution", default: false
+    t.datetime "exec_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "executions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "child_order_id"
+    t.string "side"
+    t.integer "price"
+    t.float "size"
+    t.decimal "commission", precision: 20, scale: 8
+    t.datetime "exec_date"
+    t.string "child_order_acceptance_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -48,6 +61,7 @@ ActiveRecord::Schema.define(version: 2018_08_12_054200) do
     t.decimal "bitcoin", precision: 20, scale: 8
     t.decimal "sell_count", precision: 20, scale: 8
     t.boolean "is_execution", default: false
+    t.datetime "exec_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

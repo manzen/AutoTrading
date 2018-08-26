@@ -36,7 +36,7 @@ class BuySettingsController < ApplicationController
   # PATCH/PUT /buy_settings/1.json
   def update
     respond_to do |format|
-      if @buySetting.update(setting_params)
+      if @buySetting.update(buy_setting_params)
         format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
         format.json { render :show, status: :ok, location: @buySetting }
       else
@@ -48,7 +48,9 @@ class BuySettingsController < ApplicationController
 
   def start
     buySetting = BuySetting.first
-    buySetting.is_execution = true
+    if buySetting
+      buySetting.is_execution = true
+    end
     respond_to do |format|
       if buySetting.save
         format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
@@ -62,7 +64,9 @@ class BuySettingsController < ApplicationController
 
   def stop
     buySetting = BuySetting.first
-    buySetting.is_execution = false
+    if buySetting
+      buySetting.is_execution = false
+    end
     respond_to do |format|
       if buySetting.save
         format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
@@ -82,6 +86,6 @@ class BuySettingsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def buy_setting_params
-    params.require(:buy_setting).permit(:minutes, :reduction_percent, :jpy, :buy_count)
+    params.require(:buy_setting).permit(:minutes, :reduction_percent, :jpy, :buy_count, :exec_date)
   end
 end

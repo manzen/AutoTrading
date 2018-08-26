@@ -30,6 +30,7 @@ table.table
       th 増加率
       th Bitcoin保有数
       th 取引状態
+      th 最終取引時間
       th
 
   tbody
@@ -39,5 +40,6 @@ table.table
         td = @sellSetting.sell_count
         td = @sellSetting.increase_percent
         td = @sellSetting.bitcoin
-        td = @sellSetting.is_execution == true ? '開始' : '停止'
+        td = @sellSetting.is_execution ? '開始' : '停止'
+        td = @sellSetting.exec_date
         td = link_to '編集', edit_sell_setting_path(@sellSetting)

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'tickers#show'
-  post 'change_interval', to: 'tickers#change_interval'
   get 'orders', to: 'orders#show'
+  get 'executions', to: 'executions#show'
   resources :buy_settings
   post 'buy_start', to: 'buy_settings#start'
   post 'buy_stop', to: 'buy_settings#stop'

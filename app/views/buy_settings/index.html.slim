@@ -30,6 +30,7 @@ table.table
       th 減少率
       th 現金保有数（万円）
       th 取引状態
+      th 最終取引時間
       th
 
   tbody
@@ -39,5 +40,6 @@ table.table
         td = @buySetting.buy_count
         td = @buySetting.reduction_percent
         td = @buySetting.jpy
-        td = @buySetting.is_execution == true ? '開始' : '停止'
+        td = @buySetting.is_execution ? '開始' : '停止'
+        td = @buySetting.exec_date
         td = link_to '編集', edit_buy_setting_path(@buySetting)

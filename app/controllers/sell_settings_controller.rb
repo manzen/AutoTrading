@@ -48,7 +48,9 @@ class SellSettingsController < ApplicationController
 
   def start
     sellSetting = SellSetting.first
-    sellSetting.is_execution = true
+    if sellSetting
+      sellSetting.is_execution = true
+    end
     respond_to do |format|
       if sellSetting.save
         format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }
@@ -62,7 +64,9 @@ class SellSettingsController < ApplicationController
 
   def stop
     sellSetting = SellSetting.first
-    sellSetting.is_execution = false
+    if sellSetting
+      sellSetting.is_execution = false
+    end
     respond_to do |format|
       if sellSetting.save
         format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }
@@ -82,6 +86,6 @@ class SellSettingsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sell_setting_params
-    params.require(:sell_setting).permit(:minutes, :increase_percent, :bitcoin, :sell_count)
+    params.require(:sell_setting).permit(:minutes, :increase_percent, :bitcoin, :sell_count, :exec_date)
   end
 end

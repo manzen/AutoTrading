@@ -1,0 +1,20 @@
+h1 Executions
+
+table.table
+  thead.thead-dark
+    tr
+      th Child Order ID
+      th 注文タイプ
+      th 価格
+      th SIZE
+      th 手数料
+      th 実行時間
+  tbody
+    - @executions.each do |execution|
+      tr
+        td = execution.child_order_id
+        td = execution.side
+        td = execution.price
+        td = execution.size
+        td = execution.commission
+        td = execution.exec_date
