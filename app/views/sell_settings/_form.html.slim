@@ -21,7 +21,7 @@
   .form-group
     .field
       = f.label :bitcoin, 'Bitcoin保有数'
-      = f.number_field :bitcoin, class: 'form-control'
+      = f.text_field :bitcoin, class: 'form-control'
   .row
     .col-md-1
       .actions = f.submit '更新',class: 'btn btn-primary'
