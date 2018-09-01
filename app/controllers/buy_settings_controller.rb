@@ -48,8 +48,10 @@ class BuySettingsController < ApplicationController
 
   def start
     buySetting = BuySetting.first
+    p 'buySetting', buySetting
     if buySetting
       buySetting.is_execution = true
+      p 'buySetting.is_execution', buySetting.is_execution
     end
     respond_to do |format|
       if buySetting.save
@@ -64,8 +66,10 @@ class BuySettingsController < ApplicationController
 
   def stop
     buySetting = BuySetting.first
+    p 'buySetting', buySetting
     if buySetting
-      buySetting.is_execution = false
+      buySetting.is_execution = true
+      p 'buySetting.is_execution', buySetting.is_execution
     end
     respond_to do |format|
       if buySetting.save
