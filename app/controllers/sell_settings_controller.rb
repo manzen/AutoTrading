@@ -48,9 +48,7 @@ class SellSettingsController < ApplicationController
 
   def start
     sellSetting = SellSetting.first
-    if sellSetting
-      sellSetting.is_execution = true
-    end
+    sellSetting.is_execution = true
     respond_to do |format|
       if sellSetting.save
         format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }
@@ -64,9 +62,7 @@ class SellSettingsController < ApplicationController
 
   def stop
     sellSetting = SellSetting.first
-    if sellSetting
-      sellSetting.is_execution = false
-    end
+    sellSetting.is_execution = false
     respond_to do |format|
       if sellSetting.save
         format.html { redirect_to sell_settings_url, notice: 'SellSetting was successfully updated.' }

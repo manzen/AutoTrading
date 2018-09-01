@@ -9,18 +9,18 @@ h4 現在の買い条件
     総資産の保有数が”#{@buySetting ? @buySetting.jpy : ''}” 万円（売り条件）以上の場合、”#{@buySetting ? @buySetting.buy_count : ''}” bit coin(数量（買）)を買います。
 - unless @buySetting
   p = link_to '新規作成', new_buy_setting_path , class: 'btn btn-primary'
+- else
+  = form_with url: buy_start_path do |form|
+    .form-group
+      .field
+        = form.label '定期的に買い取引を開始したい場合、こちらのボタンを押してください。'
+        = form.submit '取引開始', class: 'btn btn-primary'
 
-= form_with url: buy_start_path do |form|
-  .form-group
-    .field
-      = form.label '定期的に買い取引を開始したい場合、こちらのボタンを押してください。'
-      = form.submit '取引開始', class: 'btn btn-primary'
-
-= form_with url: buy_stop_path do |form|
-  .form-group
-    .field
-      = form.label '定期的な買い取引を停止したい場合、こちらのボタンを押してください。'
-      = form.submit '取引停止', class: 'btn btn-danger'
+  = form_with url: buy_stop_path do |form|
+    .form-group
+      .field
+        = form.label '定期的な買い取引を停止したい場合、こちらのボタンを押してください。'
+        = form.submit '取引停止', class: 'btn btn-danger'
 
 table.table
   thead.thead-dark

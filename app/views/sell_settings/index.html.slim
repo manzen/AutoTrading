@@ -10,17 +10,18 @@ h4 現在の売り条件
 - unless @sellSetting
   p = link_to '新規作成', new_sell_setting_path, class: 'btn btn-primary'
 
-= form_with url: sell_start_path do |form|
-  .form-group
-    .field
-      = form.label '定期的に売り取引を開始したい場合、こちらのボタンを押してください。'
-      = form.submit '取引開始', class: 'btn btn-primary'
+- else
+  = form_with url: sell_start_path do |form|
+    .form-group
+      .field
+        = form.label '定期的に売り取引を開始したい場合、こちらのボタンを押してください。'
+        = form.submit '取引開始', class: 'btn btn-primary'
 
-= form_with url: sell_stop_path do |form|
-  .form-group
-    .field
-      = form.label '定期的な売り取引を停止したい場合、こちらのボタンを押してください。'
-      = form.submit '取引停止', class: 'btn btn-danger'
+  = form_with url: sell_stop_path do |form|
+    .form-group
+      .field
+        = form.label '定期的な売り取引を停止したい場合、こちらのボタンを押してください。'
+        = form.submit '取引停止', class: 'btn btn-danger'
 
 table.table
   thead.thead-dark

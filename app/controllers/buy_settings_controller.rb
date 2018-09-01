@@ -48,11 +48,7 @@ class BuySettingsController < ApplicationController
 
   def start
     buySetting = BuySetting.first
-    p 'buySetting', buySetting
-    if buySetting
-      buySetting.is_execution = true
-      p 'buySetting.is_execution', buySetting.is_execution
-    end
+    buySetting.is_execution = true
     respond_to do |format|
       if buySetting.save
         format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
@@ -66,11 +62,7 @@ class BuySettingsController < ApplicationController
 
   def stop
     buySetting = BuySetting.first
-    p 'buySetting', buySetting
-    if buySetting
-      buySetting.is_execution = true
-      p 'buySetting.is_execution', buySetting.is_execution
-    end
+    buySetting.is_execution = false
     respond_to do |format|
       if buySetting.save
         format.html { redirect_to buy_settings_url, notice: 'BuySetting was successfully updated.' }
