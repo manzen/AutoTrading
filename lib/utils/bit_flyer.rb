@@ -85,8 +85,7 @@ module BitFlyer
 
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
-    response = https.request(options)
-    puts response.body
+    https.request(options)
   end
 
   def self.getexecutions
