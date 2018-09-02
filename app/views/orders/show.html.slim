@@ -10,6 +10,7 @@ table.table
       th 価格平均
       th SIZE
       th オーダ状況
+      th オーダー日
   tbody
     - @orders.each do |order|
       tr
@@ -21,3 +22,4 @@ table.table
         td = order.average_price
         td = order.size
         td = order.child_order_state
+        td = order.child_order_date
