@@ -65,12 +65,12 @@ module BitFlyer
     method = 'POST'
     uri = URI.parse('https://api.bitflyer.jp')
     uri.path = '/v1/me/sendchildorder'
-    body = {
+    body = "{
         'product_code': 'BTC_JPY',
         'child_order_type': 'MARKET',
         'side': side,
         'size': size
-    }
+    }"
 
     text = timestamp + method + uri.request_uri + body
     sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, text)
