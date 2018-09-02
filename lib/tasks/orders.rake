@@ -14,8 +14,6 @@ namespace :orders do
     if buy_setting&.is_execution
       # 現在時間より設定されたminutes以前のticker情報を取得
       old_ticker = Ticker.get_old(buy_setting.minutes)
-      p 'old ticker'
-      p old_ticker
       if old_ticker
         # 現在の最終取引価格
         latest_rate = result['ltp']
@@ -80,8 +78,6 @@ namespace :orders do
     if sell_setting&.is_execution
       # 現在時間より設定されたminutes以前のticker情報を取得
       old_ticker = Ticker.get_old(sell_setting.minutes)
-      p 'old ticker'
-      p old_ticker
 
       if old_ticker
         # 現在の最終取引価格

@@ -17,7 +17,7 @@ table.table
         td = ticker.id
         td = ticker.product_code
         td = ticker.ltp
-        td = ticker.timestamp
+        td = ticker.timestamp.in_time_zone('Asia/Tokyo')
         td = ticker.best_ask
         td = ticker.best_bid
         td = ticker.total_ask_depth

@@ -17,4 +17,4 @@ table.table
         td = execution.price
         td = execution.size
         td = execution.commission
-        td = execution.exec_date
+        td = execution.exec_date.in_time_zone('Asia/Tokyo')
