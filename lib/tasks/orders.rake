@@ -42,6 +42,7 @@ namespace :orders do
               jpy_amount = jpy.first['amount']
               if rate < 0 && rate.abs > buy_setting.reduction_percent && jpy_amount > buy_setting.jpy
                 BitFlyer.sendchildorder('BUY', buy_setting.buy_count)
+                buy_setting.exec_date = Time.now.utc
                 if buy_setting.save
                   p 'BuySetting update success'
                 else

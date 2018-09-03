@@ -70,9 +70,9 @@ module BitFlyer
         'child_order_type': 'MARKET',
         'side': side,
         'size': size
-    }
+    }.to_json
 
-    text = timestamp + method + uri.request_uri + body.to_s
+    text = timestamp + method + uri.request_uri + body
     sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, text)
 
     options = Net::HTTP::Post.new(uri.request_uri, initheader = {
