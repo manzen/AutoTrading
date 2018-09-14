@@ -17,10 +17,13 @@ namespace :orders do
       if old_ticker
         # 現在の最終取引価格
         latest_rate = result['ltp']
+        p '現在の最終取引価格', latest_rate
         # 前回の最終取引価格
         last_rate = old_ticker.ltp
+        p '前回の最終取引価格', last_rate
         # 前回の最終取引価格との増減率
         rate = (latest_rate - last_rate) / last_rate * 100
+        p '前回の最終取引価格との増減率', rate
 
         # call balance api
         balance = BitFlyer.getbalance
@@ -40,12 +43,14 @@ namespace :orders do
             if balance.kind_of?(Array)
               jpy = balance.select {|b| b['currency_code'] == 'JPY'}
               jpy_amount = jpy.first['amount']
+              p 'jpy', jpy
+              p 'jpy_amount', jpy_amount
+              p 'rate', rate
+              p 'rate.abs', rate.abs
               if rate < 0 && rate.abs > buy_setting.reduction_percent && jpy_amount > buy_setting.jpy
                 BitFlyer.sendchildorder('BUY', buy_setting.buy_count)
                 buy_setting.exec_date = Time.now.utc
-                if buy_setting.save
-                  p 'BuySetting update success'
-                else
+                unless buy_setting.save
                   p 'BuySetting update failed'
                   p 'response: ', executions
                 end
@@ -61,9 +66,7 @@ namespace :orders do
             if rate < 0 && rate.abs > buy_setting.reduction_percent && jpy_amount > buy_setting.jpy
               BitFlyer.sendchildorder('BUY', buy_setting.buy_count)
               buy_setting.exec_date = Time.now.utc
-              if buy_setting.save
-                p 'BuySetting update success'
-              else
+              unless buy_setting.save
                 p 'BuySetting update failed'
                 p 'response: ', executions
               end
@@ -104,13 +107,15 @@ namespace :orders do
             if balance.kind_of?(Array)
               bitcoin = balance.select {|b| b['currency_code'] == 'BTC'}
               bitcoin_amount = bitcoin.first['amount']
+              p 'bitcoin', bitcoin
+              p 'bitcoin_amount', bitcoin_amount
+              p 'rate', rate
+              p 'rate.abs', rate.abs
               # 前回の最終取引価格より増加かつ、ユーザーが設定した増加率以上に増加したかつ、総保有場合Bitcoinがユーザー設定値以上の場合
-              if rate > 0 && rate > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
+              if rate > 0 && rate.abs > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
                 BitFlyer.sendchildorder('SELL', sell_setting.sell_count)
                 sell_setting.exec_date = Time.now.utc
-                if sell_setting.save
-                  p 'SellSetting update success'
-                else
+                unless sell_setting.save
                   p 'SellSetting update failed'
                   p 'response: ', executions
                 end
@@ -123,12 +128,10 @@ namespace :orders do
             bitcoin = balance.select {|b| b['currency_code'] == 'BTC'}
             bitcoin_amount = bitcoin.first['amount']
             # 前回の最終取引価格より増加かつ、ユーザーが設定した増加率以上に増加したかつ、総保有場合Bitcoinがユーザー設定値以上の場合
-            if rate > 0 && rate > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
+            if rate > 0 && rate.abs > sell_setting.increase_percent && bitcoin_amount > sell_setting.bitcoin
               BitFlyer.sendchildorder('SELL', sell_setting.sell_count)
               sell_setting.exec_date = Time.now.utc
-              if sell_setting.save
-                p 'SellSetting update success'
-              else
+              unless sell_setting.save
                 p 'SellSetting update failed'
                 p 'response: ', executions
               end
@@ -140,9 +143,7 @@ namespace :orders do
 
     # Ticker更新
     ticker = Ticker.new(result)
-    if ticker.save
-      p 'Ticker update success'
-    else
+    unless ticker.save
       p 'Ticker update failed'
       p 'response: ', result
     end
@@ -155,9 +156,7 @@ namespace :orders do
     childorders.each do |order|
       order['id'] = nil
       new_order = Order.new(order)
-      if new_order.save
-        p 'Order update success'
-      else
+      unless new_order.save
         p 'Order update failed'
         p 'response: ', childorders
       end
@@ -171,9 +170,7 @@ namespace :orders do
     executions.each do |exexution|
       exexution['id'] = nil
       new_execution = Execution.new(exexution)
-      if new_execution.save
-        p 'Execution update success'
-      else
+      unless new_execution.save
         p 'Execution update failed'
         p 'response: ', executions
       end
